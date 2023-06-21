@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    mem_limit: 256m
+    volumes:
+      - ./logs.log:/app/logs.log
+    command: python main.py
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    mem_limit: 256m
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    env_file:
+      - .env
+    volumes:
+      - chat_data:/data/db
+      - chat_data_config:/data/configdb
+
+volumes:
+  chat_data:
+  chat_data_config:
